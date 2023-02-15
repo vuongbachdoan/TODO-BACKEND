@@ -10,13 +10,13 @@ export class UserService {
         @Inject('USER_MODEL') private userModel: Model<User>
     ){}
 
-    create(user: UserDto) {
+    async create(user: UserDto) {
         const newUser = new this.userModel(user);
-        return newUser.save();
+        return await newUser.save();
     }
 
-    getOne(id: string) : any {
-        return this.userModel.find({_id : {$eq: id}});
+    getOne(email: string) : any {
+        return this.userModel.find({email : {$eq: email}});
     }
 
     getAll(): Promise<User[]> {
