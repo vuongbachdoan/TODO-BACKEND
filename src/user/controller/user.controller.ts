@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Render, Res, UseGuards } from "@nestjs/common";
 import { Response } from "express";
 import { UserService } from "../services/user.services";
-import { AuthGuard } from "@nestjs/passport";
+import * as bcrypt from "bcrypt";
 
 @Controller('/api/v1/account')
 export class UserController {
@@ -23,21 +23,33 @@ export class UserController {
             );
     }
 
-    @UseGuards(AuthGuard('local'))
     @Post()
-    create(@Body() user: any, @Res() res: Response): void {
-        this.userService.create(user)
+    create(@Body() user: any, @Res() res: Response) {
+        bcrypt.hash(user.password, 10)
             .then(
-                (val) => res.status(HttpStatus.OK).json(val)
-            )
-            .catch(
-                (err) => res.status(HttpStatus.EXPECTATION_FAILED).json(err)
+                (hashedPassword) => {
+                    user.password = hashedPassword;
+                    this.userService.create(user)
+                        .then(
+                            (val) => res.status(HttpStatus.OK).json(val)
+                        )
+                        .catch(
+                            (err) => res.status(HttpStatus.EXPECTATION_FAILED).json(err)
+                        );
+                }
             );
+        // this.userService.create(user)
+        //     .then(
+        //         (val) => res.status(HttpStatus.OK).json(val)
+        //     )
+        //     .catch(
+        //         (err) => res.status(HttpStatus.EXPECTATION_FAILED).json(err)
+        //     );
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() user: any, @Res() res: Response): void {
-        this.userService.update(id, user)
+    update(@Body() user: any, @Res() res: Response): void {
+        this.userService.update(user._id, user)
             .then(
                 (val) => res.status(HttpStatus.OK).json(val)
             )

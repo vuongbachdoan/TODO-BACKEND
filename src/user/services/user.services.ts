@@ -16,15 +16,15 @@ export class UserService {
     }
 
     getOne(email: string) : any {
-        return this.userModel.find({email : {$eq: email}});
+        return this.userModel.findOne({email : {$eq: email}});
     }
 
     getAll(): Promise<User[]> {
         return this.userModel.find().exec()
     }
 
-    update(id: string, user: any) {
-        return this.userModel.updateOne({_id: {$eq: id}}, {user});
+    update(id: string, data: any) {
+        return this.userModel.updateOne({_id: {$eq: id}}, {data});
     }
 
     remove(id: string) {
