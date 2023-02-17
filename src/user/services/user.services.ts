@@ -15,19 +15,19 @@ export class UserService {
         return await newUser.save();
     }
 
-    getOne(email: string) : any {
-        return this.userModel.findOne({email : {$eq: email}});
+    async getOne(email: string) {
+        return await this.userModel.findOne({email : {$eq: email}});
     }
 
-    getAll(): Promise<User[]> {
-        return this.userModel.find().exec()
+    async getAll(): Promise<User[]> {
+        return await this.userModel.find().exec()
     }
 
-    update(id: string, data: any) {
-        return this.userModel.updateOne({_id: {$eq: id}}, {data});
+    async update(id: string, data: any) {
+        return await this.userModel.updateOne({_id: {$eq: id}}, {data});
     }
 
-    remove(id: string) {
-        return this.userModel.remove({_id: {$eq: id}});
+    async remove(id: string) {
+        return await this.userModel.remove({_id: {$eq: id}});
     }
 }

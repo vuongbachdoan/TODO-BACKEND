@@ -20,8 +20,7 @@ export class AuthService {
 
         const isPasswordValid = await bcrypt.compare(user.password, userFound.password);
         if(userFound && isPasswordValid) {
-            const { password, ...result } = userFound;
-            return result;
+            return userFound;
         } else {
             return null;
         }
@@ -68,7 +67,7 @@ export class AuthService {
         this.userService.update(userId, {refreshToken: hashedRefreshToken});
     }
 
-    async login(user: AuthDto) {
+    async login(user: AuthDto) : Promise<any> {
         const userFound = await this.userService.getOne(user.email);
         if(!userFound) throw new BadRequestException("User not found");
 
@@ -76,7 +75,7 @@ export class AuthService {
         if(!passwordMatches) throw new BadRequestException("Invalid password");
 
         const tokens = await this.getToken(userFound._id, user.email);
-        await this.updateRefreshToken(userFound._id, tokens.refreshToken);
+        await this.updateRefreshToken(`${userFound._id}`, tokens.refreshToken);
 
         return {
             access_token: tokens.accessToken,
