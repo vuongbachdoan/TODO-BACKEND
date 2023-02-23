@@ -24,7 +24,8 @@ export class UserService {
     }
 
     async update(id: string, data: any) {
-        return await this.userModel.updateOne({_id: {$eq: id}}, {data});
+        console.log(id)
+        return await this.userModel.updateOne({_id: {$eq: id}}, {$set: {refreshToken: data.refreshToken}});
     }
 
     async remove(id: string) {

@@ -16,8 +16,6 @@ export class AuthService {
 
     async validateUser(user): Promise<any> {
         const userFound = await this.userService.getOne(user.email);
-        if(!user) return null;
-
         const isPasswordValid = await bcrypt.compare(user.password, userFound.password);
         if(userFound && isPasswordValid) {
             return userFound;
@@ -78,6 +76,7 @@ export class AuthService {
         await this.updateRefreshToken(`${userFound._id}`, tokens.refreshToken);
 
         return {
+            id: userFound._id,
             access_token: tokens.accessToken,
             refresh_token: tokens.refreshToken
         }
@@ -88,7 +87,6 @@ export class AuthService {
         if(userExists) {
             throw new BadRequestException("User already exists");
         }
-
         const hash = await this.hashData(createUserDto.password);
         const newUser = await this.userService.create({
             ...createUserDto,
@@ -98,6 +96,7 @@ export class AuthService {
         const tokens = await this.getToken(newUser._id, newUser.email);
         this.userService.update(`${newUser._id}`, {refreshToken: tokens.refreshToken})
         return {
+            id: newUser._id,
             access_token: tokens.accessToken,
             refresh_token: tokens.refreshToken
         };

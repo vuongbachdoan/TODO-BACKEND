@@ -1,44 +1,31 @@
-// import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Render, Res } from "@nestjs/common";
-// import { Response } from "express";
+import {Body, Controller, Get, HttpStatus, Post, Res} from "@nestjs/common"
+import { Response } from "express";
+import { WorkspaceService } from "../service/workspace.service";
+import { WorkspaceCreateDto } from "../models/workspace-create.dto";
 
-// @Controller('/api/v1/app/workspace')
-// export class WorkspaceController {
-//     constructor(private userService: UserService) { }
+@Controller('api/v1/app/workspaces')
+export class WorkspaceController {
+    constructor(private workspaceService: WorkspaceService) {}
 
-//     @Get(':id')
-//     getOne(@Param() id: string, @Res() res: Response): void {
-//         res.status(HttpStatus.OK).json(this.userService.getOne(id));
-//     }
+    @Get()
+    getWorkspace (@Body() data, @Res() res: Response) {
+        this.workspaceService.getWorkspaces(data.id)
+            .then(
+                (data) => res.status(HttpStatus.OK).json(data)
+            )
+            .catch(
+                (err) => res.status(HttpStatus.BAD_REQUEST).json(err)
+            );
+    }
 
-//     @Get()
-//     getAll(@Res() res: Response): void {
-//         this.userService.getAll()
-//             .then(
-//                 (val) => res.status(HttpStatus.OK).json(val)
-//             )
-//             .catch(
-//                 (err) => res.status(HttpStatus.EXPECTATION_FAILED).json(err)
-//             )
-//     }
-
-//     @Post()
-//     create(@Body() user: any, @Res() res: Response): void {
-//         this.userService.create(user)
-//             .then(
-//                 (val) => res.status(HttpStatus.OK).json(val)
-//             )
-//             .catch(
-//                 (err) => res.status(HttpStatus.EXPECTATION_FAILED).json(err)
-//             )
-//     }
-
-//     @Put(':id')
-//     update(@Param('id') id: string, @Body() user: any, @Res() res: Response): void {
-//         res.status(HttpStatus.OK).json(this.userService.update(id, user));
-//     }
-
-//     @Delete(':id')
-//     remove(@Param('id') id: string, @Res() res: Response): void {
-//         res.status(HttpStatus.OK).json(this.userService.remove(id));
-//     }
-// }
+    @Post()
+    createWorkspace (@Body() data: WorkspaceCreateDto, @Res() res: Response) {
+        this.workspaceService.create(data)
+            .then(
+                (data) => res.status(HttpStatus.OK).json(data)
+            )
+            .catch(
+                (err) => res.status(HttpStatus.BAD_REQUEST).json(err)
+            );
+    }
+}
