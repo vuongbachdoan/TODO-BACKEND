@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Post, Res} from "@nestjs/common"
+import {Body, Controller, Get, HttpStatus, Param, Post, Res} from "@nestjs/common"
 import { Response } from "express";
 import { WorkspaceService } from "../service/workspace.service";
 import { WorkspaceCreateDto } from "../models/workspace-create.dto";
@@ -7,11 +7,11 @@ import { WorkspaceCreateDto } from "../models/workspace-create.dto";
 export class WorkspaceController {
     constructor(private workspaceService: WorkspaceService) {}
 
-    @Get()
-    getWorkspace (@Body() data, @Res() res: Response) {
-        this.workspaceService.getWorkspaces(data.id)
+    @Get(':id')
+    getWorkspace (@Param('id') id: string, @Res() res: Response) {
+        this.workspaceService.getWorkspaces(id)
             .then(
-                (data) => res.status(HttpStatus.OK).json(data)
+                (out) => res.status(HttpStatus.OK).json(out)
             )
             .catch(
                 (err) => res.status(HttpStatus.BAD_REQUEST).json(err)
@@ -22,7 +22,7 @@ export class WorkspaceController {
     createWorkspace (@Body() data: WorkspaceCreateDto, @Res() res: Response) {
         this.workspaceService.create(data)
             .then(
-                (data) => res.status(HttpStatus.OK).json(data)
+                (out) => res.status(HttpStatus.OK).json(out)
             )
             .catch(
                 (err) => res.status(HttpStatus.BAD_REQUEST).json(err)

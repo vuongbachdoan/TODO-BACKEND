@@ -28,6 +28,6 @@ export class WorkspaceService {
                 {member: id},
             ]
         })
-        return await foundedWorkspace;
+        return foundedWorkspace;
     }
 }
