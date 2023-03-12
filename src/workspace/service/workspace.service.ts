@@ -12,6 +12,7 @@ export class WorkspaceService {
     ) {}
 
     async create(workspace: WorkspaceCreateDto) {
+        console.log(workspace)
         const newWorkspace = new this.workspaceModel({
             ...workspace,
             createdAt: new Date(),
@@ -22,12 +23,17 @@ export class WorkspaceService {
     }
 
     async getWorkspaces(id: string) {
-        const foundedWorkspace = await this.workspaceModel.find({
+        const workspaces = await this.workspaceModel.find({
             $or: [
                 {ownerId: {$eq: id}},
                 {member: id},
             ]
         })
-        return foundedWorkspace;
+        return workspaces;
+    }
+
+    async deleteWorkspace(workspaceId: string) {
+        const workspaces = await this.workspaceModel.findByIdAndDelete(workspaceId);
+        return workspaces;
     }
 }

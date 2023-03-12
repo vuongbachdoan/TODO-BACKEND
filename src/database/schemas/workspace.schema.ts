@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+import { TaskSchema } from "./task.schema";
 
 export const WorkspaceSchema = new mongoose.Schema({
     name: String,
@@ -8,5 +9,6 @@ export const WorkspaceSchema = new mongoose.Schema({
     createAt: Date,
     updateAt: Date,
     members: Array<String>,
-    ownerId: String
+    ownerId: String,
+    tasks: [TaskSchema]
 })

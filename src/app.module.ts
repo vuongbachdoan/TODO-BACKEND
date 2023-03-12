@@ -5,12 +5,14 @@ import { UserController } from "./user/controller/user.controller";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
 import { WorkspaceModule } from "./workspace/workspace.module";
+import { TaskModule } from "./task/task.module";
 
 @Module({
     imports: [
         UserModule,
         AuthModule,
         WorkspaceModule,
+        TaskModule,
         ConfigModule.forRoot({isGlobal: true})
     ]
 })
