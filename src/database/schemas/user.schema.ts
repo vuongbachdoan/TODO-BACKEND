@@ -4,4 +4,6 @@ export const UserSchema = new mongoose.Schema({
     email: String,
     password: String,
     createAt: Date,
+    refreshToken: String,
+    workspaces: Array<String>
 });
