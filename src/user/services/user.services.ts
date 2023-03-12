@@ -10,25 +10,24 @@ export class UserService {
         @Inject('USER_MODEL') private userModel: Model<User>
     ){}
 
-    async create(user: UserDto) {
+    create(user: UserDto) {
         const newUser = new this.userModel(user);
-        return await newUser.save();
+        return newUser.save();
     }
 
-    async getOne(email: string) {
-        return await this.userModel.findOne({email : {$eq: email}});
+    getOne(id: string) : any {
+        return this.userModel.find({_id : {$eq: id}});
     }
 
-    async getAll(): Promise<User[]> {
-        return await this.userModel.find().exec()
+    getAll(): Promise<User[]> {
+        return this.userModel.find().exec()
     }
 
-    async update(id: string, data: any) {
-        console.log(id)
-        return await this.userModel.updateOne({_id: {$eq: id}}, {$set: {refreshToken: data.refreshToken}});
+    update(id: string, user: any) {
+        return this.userModel.updateOne({_id: {$eq: id}}, {user});
     }
 
-    async remove(id: string) {
-        return await this.userModel.remove({_id: {$eq: id}});
+    remove(id: string) {
+        return this.userModel.remove({_id: {$eq: id}});
     }
 }
