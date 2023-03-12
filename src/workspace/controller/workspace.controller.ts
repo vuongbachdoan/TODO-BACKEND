@@ -1,7 +1,7 @@
+import { WorkspaceCreateDto } from '../models/workspace-create.dto';
 import {Body, Controller, Delete, Get, HttpStatus, Param, Post, Res} from "@nestjs/common"
 import { Response } from "express";
 import { WorkspaceService } from "../service/workspace.service";
-import { WorkspaceCreateDto } from "../models/workspace-create.dto";
 
 @Controller('api/v1/app/workspaces')
 export class WorkspaceController {

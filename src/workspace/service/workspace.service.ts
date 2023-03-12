@@ -1,9 +1,7 @@
+import { Workspace } from 'src/workspace/models/workspace.interface';
 import { Inject, Injectable } from "@nestjs/common";
 import { Model } from "mongoose";
-import * as mongoose from "mongoose";
-import { Workspace } from "../models/workspace.interface";
-import { WorkspaceCreateDto } from "../models/workspace-create.dto";
-import { User } from "src/user/models/user.interface";
+import { WorkspaceCreateDto } from '../models/workspace-create.dto';
 
 @Injectable()
 export class WorkspaceService {
